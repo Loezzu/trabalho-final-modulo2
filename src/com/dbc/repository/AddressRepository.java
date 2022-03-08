@@ -4,6 +4,7 @@ import com.dbc.entities.Address;
 import com.dbc.exceptions.BancoDeDadosException;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class AddressRepository implements Actions<Integer, Address>{
@@ -61,7 +62,37 @@ public class AddressRepository implements Actions<Integer, Address>{
 
     @Override
     public List<Address> listAll() throws BancoDeDadosException {
-        return null;
+        List<Address> addresses = new ArrayList<>();
+        Connection con = null;
+        try {
+            con = ConexaoBancoDeDados.getConnection();
+            Statement stmt = con.createStatement();
+
+            String sql = "SELECT * FROM ADDRESS";
+
+            // Executa-se a consulta
+            ResultSet res = stmt.executeQuery(sql);
+
+            while (res.next()) {
+                Address address = new Address();
+                address.setIdAddress(res.getInt("ID_ADDRESS"));
+                address.setStreet(res.getString("STREET"));
+                address.setCity(res.getString("CITY"));
+                address.setNumber(res.getInt("HOUSE_NUMBER"));
+                addresses.add(address);
+            }
+        } catch (SQLException e) {
+            throw new BancoDeDadosException(e.getCause());
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return addresses;
     }
 
     @Override

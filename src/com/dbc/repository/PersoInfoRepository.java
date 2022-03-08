@@ -1,9 +1,12 @@
 package com.dbc.repository;
 
+import com.dbc.entities.Address;
 import com.dbc.entities.PersoInfo;
 import com.dbc.exceptions.BancoDeDadosException;
+import com.dbc.service.PersoInfoService;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PersoInfoRepository implements Actions<Integer, PersoInfo>{
@@ -61,7 +64,37 @@ public class PersoInfoRepository implements Actions<Integer, PersoInfo>{
 
     @Override
     public List<PersoInfo> listAll() throws BancoDeDadosException {
-        return null;
+        List<PersoInfo> persoInfos = new ArrayList<>();
+        Connection con = null;
+        try {
+            con = ConexaoBancoDeDados.getConnection();
+            Statement stmt = con.createStatement();
+
+            String sql = "SELECT * FROM PERSOINFO";
+
+            // Executa-se a consulta
+            ResultSet res = stmt.executeQuery(sql);
+
+            while (res.next()) {
+                PersoInfo persoInfo = new PersoInfo();
+                persoInfo.setIdPersoInfo(res.getInt("ID_PERSOINFO"));
+                persoInfo.setRealName(res.getString("REALNAME"));
+                persoInfo.setAge(res.getInt("AGE"));
+                persoInfo.setEmail(res.getString("EMAIL"));
+                persoInfos.add(persoInfo);
+            }
+        } catch (SQLException e) {
+            throw new BancoDeDadosException(e.getCause());
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return persoInfos;
     }
 
     @Override

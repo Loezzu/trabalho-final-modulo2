@@ -87,6 +87,12 @@ public class Main {
         user.setAddress(address);
         userService.addUser(user);
 
+        System.out.println("LISTANDO ENDEREÇOS: ");
+        addressService.listAddress();
+        System.out.println();
+        System.out.println("LISTANDO PERSOINFOS: ");
+        persoInfoService.listPersoInfos();
+
         sc.close();
     }
 }
