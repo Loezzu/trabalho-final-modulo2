@@ -119,7 +119,7 @@ public class UserRepository implements Actions<Integer, User> {
 
             // Executa-se a consulta
             int res = stmt.executeUpdate();
-            System.out.println("removerContatoPorId.res=" + res);
+            System.out.println("removerUserPorId.res=" + res);
 
             return res > 0;
         } catch (SQLException e) {

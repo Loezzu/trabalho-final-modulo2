@@ -29,4 +29,13 @@ public class AddressService {
         }
     }
 
+    public void removeAddressById(Integer id){
+        try{
+            boolean conseguiuRemover = addressRepository.delete(id);
+            System.out.println("Conseguiu remover: " + conseguiuRemover + " | ID: " + id);
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
 }

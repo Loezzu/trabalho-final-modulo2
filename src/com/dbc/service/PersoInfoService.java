@@ -30,4 +30,13 @@ public class PersoInfoService {
         }
     }
 
+    public void removePersoInfoById(Integer id){
+        try{
+            boolean conseguiuRemover = persoInfoRepository.delete(id);
+            System.out.println("Conseguiu remover: " + conseguiuRemover + " | ID: " + id);
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
 }

@@ -26,7 +26,16 @@ public class Main {
         Address address = new Address();
         PersoInfo persoInfo = new PersoInfo();
 
-        userService.removeUserById(user.getUserId());
+        userService.listUsers();
+        userService.removeUserById(2);
+        persoInfoService.removePersoInfoById(2);
+        addressService.removeAddressById(2);
+
+        userService.listUsers();
+        persoInfoService.listPersoInfos();
+        addressService.listAddress();
+
+
 
 
 //        //Criando e adicionando endereço
