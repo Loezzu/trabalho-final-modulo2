@@ -30,4 +30,13 @@ public class UserService {
         }
     }
 
+    public void removeUserById(Integer id){
+        try{
+            boolean conseguiuRemover = userRepository.delete(id);
+            System.out.println("Conseguiu remover: " + conseguiuRemover + " | ID: " + id);
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
 }
