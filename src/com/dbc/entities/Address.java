@@ -1,9 +1,19 @@
-package com.dbc.poo.entities;
+package com.dbc.entities;
 
 public class Address {
+
+    private Integer idAddress;
     private String street;
-    private int number;
+    private Integer number;
     private String city;
+
+    public Integer getIdAddress() {
+        return idAddress;
+    }
+
+    public void setIdAddress(Integer idAddress) {
+        this.idAddress = idAddress;
+    }
 
     public String getStreet() {
         return street;
@@ -15,7 +25,7 @@ public class Address {
     public int getNumber() {
         return number;
     }
-    public void setNumber(int number) {
+    public void setNumber(Integer number) {
         this.number = number;
     }
 
@@ -26,20 +36,11 @@ public class Address {
         this.city = city;
     }
 
-    public Address(String street, int number, String city) {
-        this.street = street;
-        this.number = number;
-        this.city = city;
-    }
-
-    public void printAddress(){
-        System.out.println(this);
-    }
-
     @Override
     public String toString() {
         return "Address{" +
-                "street='" + street + '\'' +
+                "idAddress=" + idAddress +
+                ", street='" + street + '\'' +
                 ", number=" + number +
                 ", city='" + city + '\'' +
                 '}';

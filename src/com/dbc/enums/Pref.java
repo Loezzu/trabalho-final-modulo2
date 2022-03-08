@@ -1,8 +1,10 @@
-package com.dbc.poo.enums;
+package com.dbc.enums;
 
-import com.dbc.poo.enums.Gender;
+import com.dbc.enums.Gender;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 
 public enum Pref {

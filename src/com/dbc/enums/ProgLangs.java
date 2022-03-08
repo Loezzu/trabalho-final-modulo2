@@ -1,4 +1,4 @@
-package com.dbc.poo.enums;
+package com.dbc.enums;
 
 public enum ProgLangs {
     JAVASCRIPT,

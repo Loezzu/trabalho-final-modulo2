@@ -1,17 +1,20 @@
-package com.dbc.poo.entities;
+package com.dbc.entities;
+
+import java.net.Inet4Address;
 
 public class PersoInfo {
+
+    private Integer idPersoInfo;
     private String realName;
-    private int age;
+    private Integer age;
     private String email;
 
-    public PersoInfo(String realName, int age, String email) {
-        this.realName = realName;
-        this.age = age;
-        this.email = email;
+    public Integer getIdPersoInfo() {
+        return idPersoInfo;
     }
 
-    public PersoInfo() {
+    public void setIdPersoInfo(Integer idPersoInfo) {
+        this.idPersoInfo = idPersoInfo;
     }
 
     public String getRealName() {
@@ -24,7 +27,7 @@ public class PersoInfo {
     public int getAge() {
         return age;
     }
-    public void setAge(int age) {
+    public void setAge(Integer age) {
         this.age = age;
     }
 
@@ -35,14 +38,11 @@ public class PersoInfo {
         this.email = email;
     }
 
-    public void printPersoInfo() {
-        System.out.println(this);
-    }
-
     @Override
     public String toString() {
         return "PersoInfo{" +
-                "realName='" + realName + '\'' +
+                "idPersoInfo=" + idPersoInfo +
+                ", realName='" + realName + '\'' +
                 ", age=" + age +
                 ", email='" + email + '\'' +
                 '}';
