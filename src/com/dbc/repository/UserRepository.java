@@ -1,6 +1,8 @@
 package com.dbc.repository;
 
 
+import com.dbc.entities.Address;
+import com.dbc.entities.PersoInfo;
 import com.dbc.entities.User;
 import com.dbc.enums.Gender;
 import com.dbc.enums.Pref;
@@ -8,7 +10,7 @@ import com.dbc.enums.ProgLangs;
 import com.dbc.exceptions.BancoDeDadosException;
 
 import java.sql.*;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserRepository implements Actions<Integer, User> {
@@ -71,8 +73,36 @@ public class UserRepository implements Actions<Integer, User> {
     }
 
     @Override
-    public List listAll() throws BancoDeDadosException {
-        return null;
+    public List<User> listAll() throws BancoDeDadosException {
+        List<User> users = new ArrayList<>();
+        Connection con = null;
+        try {
+            con = ConexaoBancoDeDados.getConnection();
+            Statement stmt = con.createStatement();
+
+            String sql = "SELECT * FROM TINDEV_USER tu LEFT OUTER JOIN  ADDRESS a ON tu.ADDRESS_ID_ADDRESS = a.ID_ADDRESS" +
+                    " LEFT OUTER JOIN PERSOINFO pi ON tu.PERSOINFO_ID_PERSOINFO = pi.ID_PERSOINFO";
+
+            // Executa-se a consulta
+            ResultSet res = stmt.executeQuery(sql);
+
+            while (res.next()) {
+                User user = getUserFromResultSet(res);
+                users.add(user);
+            }
+            return users;
+
+        } catch (SQLException e) {
+            throw new BancoDeDadosException(e.getCause());
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -83,5 +113,34 @@ public class UserRepository implements Actions<Integer, User> {
     @Override
     public boolean edit(Integer id, User user) throws BancoDeDadosException {
         return false;
+    }
+
+    private User getUserFromResultSet(ResultSet res) throws SQLException {
+        User user = new User();
+        PersoInfo persoInfo = new PersoInfo();
+        Address address = new Address();
+        user.setUserId(res.getInt("USER_ID"));
+        user.setUserType(res.getInt("USER_TYPE"));
+        user.setUsername(res.getString("USERNAME"));
+        user.setPassword(res.getString("PASSWORD"));
+        user.setProgLangs(ProgLangs.valueOf(res.getString("PROGLANGS")));
+        user.setGender(Gender.valueOf(res.getString("GENDER")));
+        user.setPref(Pref.valueOf(res.getString("PREF")));
+        user.setWhats(res.getString("WHATSAPP"));
+
+        persoInfo.setIdPersoInfo(res.getInt("PERSOINFO_ID_PERSOINFO"));
+        persoInfo.setRealName(res.getString("REALNAME"));
+        persoInfo.setAge(res.getInt("AGE"));
+        persoInfo.setEmail(res.getString("EMAIL"));
+
+        address.setIdAddress(res.getInt("ADDRESS_ID_ADDRESS"));
+        address.setStreet(res.getString("STREET"));
+        address.setCity(res.getString("CITY"));
+        address.setNumber(res.getInt("HOUSE_NUMBER"));
+
+        user.setPersoInfo(persoInfo);
+        user.setAddress(address);
+
+        return user;
     }
 }

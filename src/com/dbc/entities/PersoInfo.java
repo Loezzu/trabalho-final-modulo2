@@ -9,6 +9,7 @@ public class PersoInfo {
     private Integer age;
     private String email;
 
+
     public Integer getIdPersoInfo() {
         return idPersoInfo;
     }
@@ -37,6 +38,8 @@ public class PersoInfo {
     public void setEmail(String email) {
         this.email = email;
     }
+
+
 
     @Override
     public String toString() {
