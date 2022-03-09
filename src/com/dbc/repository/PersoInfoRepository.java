@@ -128,7 +128,39 @@ public class PersoInfoRepository implements Actions<Integer, PersoInfo>{
     }
 
     @Override
-    public boolean edit(Integer id, PersoInfo persoInfo) throws BancoDeDadosException {
-        return false;
+    public boolean edit(PersoInfo persoInfo, PersoInfo newPersoInfo) throws BancoDeDadosException {
+        Connection con = null;
+        try {
+            con = ConexaoBancoDeDados.getConnection();
+
+            String sql = "UPDATE PERSOINFO SET " +
+                    " REALNAME = ?," +
+                    " AGE = ?," +
+                    " EMAIL = ? " +
+                    " WHERE ID_PERSOINFO = ?";
+
+            PreparedStatement stmt = con.prepareStatement(sql);
+
+            stmt.setString(1, newPersoInfo.getRealName());
+            stmt.setInt(2, newPersoInfo.getAge());
+            stmt.setString(3,newPersoInfo.getEmail());
+            stmt.setInt(4, persoInfo.getIdPersoInfo());
+
+            // Executa-se a consulta
+            int res = stmt.executeUpdate();
+            System.out.println("editarPessoa.res=" + res);
+
+            return res > 0;
+        } catch (SQLException e) {
+            throw new BancoDeDadosException(e.getCause());
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

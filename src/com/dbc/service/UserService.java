@@ -39,8 +39,21 @@ public class UserService {
         }
     }
 
+    public void editarUsuario(User user, User newUser){
+        try{
+            boolean conseguiuEditar = userRepository.edit(user, newUser);
+            System.out.println("Editou: " + conseguiuEditar);
+        } catch (BancoDeDadosException e) {
+            e.printStackTrace();
+        }
+    }
+
     public List<User> loginList() throws BancoDeDadosException {
         return userRepository.list();
+    }
+
+    public void printMyUser(User user){
+        System.out.println(user);
     }
 
     public List<User> listarUsuariosDisponiveis(User user){
