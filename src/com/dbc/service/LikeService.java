@@ -53,9 +53,9 @@ public class LikeService {
    public void match(User user1, User user2) {
         try {
             if (user1.getProgLangs().equals(user2.getProgLangs())) {
-                System.out.println("\n" + user1 + " e " + user2 + " formaram um casal.");
+                System.out.println("\n" + user1.getUsername() + " e " + user2.getUsername() + "\npodem formar um casal.");
             } else {
-                System.out.println("\n" + user1 + " e " + user2 + " não formaram um casal.");
+                System.out.println("\n" + user1.getUsername() + " e " + user2.getUsername() + "\nnão podem formar um casal.");
             }
         } catch (Exception e) {
             System.out.println("Não há nenhum match registrado.");
