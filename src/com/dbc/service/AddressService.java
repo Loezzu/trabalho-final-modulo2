@@ -1,7 +1,7 @@
 package com.dbc.service;
 
 
-import com.dbc.entities.Address;
+import com.dbc.model.Address;
 import com.dbc.exceptions.BancoDeDadosException;
 import com.dbc.repository.AddressRepository;
 
@@ -14,7 +14,6 @@ public class AddressService {
     public void addAddress(Address address){
         try{
             Address newAddress = addressRepository.register(address);
-            System.out.println("Address adicionado! " + newAddress);
         } catch (BancoDeDadosException e){
             e.printStackTrace();
         }

@@ -1,4 +1,4 @@
-package com.dbc.entities;
+package com.dbc.model;
 
 import com.dbc.enums.Gender;
 import com.dbc.enums.Pref;

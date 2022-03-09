@@ -1,6 +1,6 @@
 package com.dbc.service;
 
-import com.dbc.entities.PersoInfo;
+import com.dbc.model.PersoInfo;
 import com.dbc.exceptions.BancoDeDadosException;
 import com.dbc.repository.PersoInfoRepository;
 
@@ -13,7 +13,6 @@ public class PersoInfoService {
     public void addPersoInfo(PersoInfo persoInfo){
         try{
             PersoInfo newPersoInfo = persoInfoRepository.register(persoInfo);
-            System.out.println("PersoInfo adicionado! " + newPersoInfo);
         } catch (BancoDeDadosException e){
             e.printStackTrace();
         }

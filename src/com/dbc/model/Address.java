@@ -1,4 +1,4 @@
-package com.dbc.entities;
+package com.dbc.model;
 
 public class Address {
 

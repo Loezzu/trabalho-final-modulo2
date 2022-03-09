@@ -1,9 +1,9 @@
 package com.dbc.repository;
 
 
-import com.dbc.entities.Address;
-import com.dbc.entities.PersoInfo;
-import com.dbc.entities.User;
+import com.dbc.model.Address;
+import com.dbc.model.PersoInfo;
+import com.dbc.model.User;
 import com.dbc.enums.Gender;
 import com.dbc.enums.Pref;
 import com.dbc.enums.ProgLangs;
@@ -53,8 +53,7 @@ public class UserRepository implements Actions<Integer, User> {
             stmt.setString(7, user.getGender().toString());
             stmt.setString(8, user.getPref().toString());
 
-            int res = stmt.executeUpdate();
-            System.out.println("Adicionar user.res = " + res);
+            stmt.executeUpdate();
             return user;
 
         }catch (SQLException e) {

@@ -1,8 +1,8 @@
 package com.dbc;
 
-import com.dbc.entities.Address;
-import com.dbc.entities.PersoInfo;
-import com.dbc.entities.User;
+import com.dbc.model.Address;
+import com.dbc.model.PersoInfo;
+import com.dbc.model.User;
 import com.dbc.enums.Gender;
 import com.dbc.enums.Pref;
 import com.dbc.enums.ProgLangs;
@@ -36,20 +36,19 @@ public class Menu {
                 Digite a opção desejada:
                 1 - Login
                 2 - Cadastro
-                3 - Encerrar Programa""");
+                3 - Listar Todos Usuarios
+                4 - Encerrar Programa""");
 
         int menu = Integer.parseInt(scan.next());
 
         switch (menu) {
-            case 1 -> {
-                login();
+            case 1 -> login();
+            case 2 -> registerUser();
+            case 3 -> {
+                userService.listUsers();
+                appInit();
             }
-            case 2 -> {
-                registerUser();
-            }
-            case 3 ->{
-                System.exit(1);
-            }
+            case 4 -> System.exit(1);
             default -> {
                 System.out.println("Tente novamente.");
                 appInit();
@@ -197,6 +196,8 @@ public class Menu {
         System.out.println("""
                     \n[TINDEV]
                     1 - Listar candidatos
+                    2 - Imprimir meus Likes
+                    3 - Deletar Meus Likes
                     9 - Ir para o menu anterior""");
         int userMenu = scan.nextInt();
         scan.nextLine();
@@ -207,7 +208,18 @@ public class Menu {
                 likeService.listCandidates(userList, user);
                 tinDev(user);
             }
-            default -> tinDev(user);
+            case 2 -> {
+                likeService.printLikes(user.getUserId());
+                tinDev(user);
+            }
+            case 3 -> {
+                System.out.println("Qual Like deseja Remover? (Escolha pelo ID_LIKE)");
+                likeService.printLikes(user.getUserId());
+                int option = scan.nextInt();
+                likeService.deleteLikeById(option);
+                tinDev(user);
+            }
+            default -> userMenu(user);
         }
     }
 

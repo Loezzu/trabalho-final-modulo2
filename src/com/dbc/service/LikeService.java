@@ -1,19 +1,16 @@
 package com.dbc.service;
 
-import com.dbc.Menu;
-import com.dbc.entities.Like;
-import com.dbc.entities.User;
+import com.dbc.model.Like;
+import com.dbc.model.User;
 import com.dbc.repository.LikeRepository;
-import com.dbc.repository.UserRepository;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
 
 public class LikeService {
 
     LikeRepository likeRepository = new LikeRepository();
-    UserRepository userRepository = new UserRepository();
-//    Menu menu = new Menu();
     Scanner scan = new Scanner(System.in);
 
 
@@ -40,7 +37,6 @@ public class LikeService {
             }
         }
        System.out.println("\n Não há mais nenhum usuário disponível para dar like.");
-
     }
 
 
@@ -52,16 +48,14 @@ public class LikeService {
                 System.out.println("Não foi possível dar like.");
                 return false;
             }
-        }
+    }
 
    public void match(User user1, User user2) {
         try {
-            if (verificaSeJaFoiDadoLike(user1, user2) && verificaSeJaFoiDadoLike(user2, user1)) {
-                if (user1.getProgLangs().equals(user2.getProgLangs())) {
-                    System.out.println("\n" + user1 + " e " + user2 + " formaram um casal.");
-                } else {
-                    System.out.println("\n" + user1 + " e " + user2 + " não formaram um casal.");
-                }
+            if (user1.getProgLangs().equals(user2.getProgLangs())) {
+                System.out.println("\n" + user1 + " e " + user2 + " formaram um casal.");
+            } else {
+                System.out.println("\n" + user1 + " e " + user2 + " não formaram um casal.");
             }
         } catch (Exception e) {
             System.out.println("Não há nenhum match registrado.");
@@ -81,5 +75,13 @@ public class LikeService {
             System.out.println("Não há nenhum like registrado.");
         }
         return false;
+    }
+
+    public void deleteLikeById(int id) {
+        try{
+            likeRepository.delete(id);
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
     }
 }

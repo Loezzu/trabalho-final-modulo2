@@ -1,9 +1,7 @@
 package com.dbc.repository;
 
-import com.dbc.entities.Address;
-import com.dbc.entities.PersoInfo;
+import com.dbc.model.PersoInfo;
 import com.dbc.exceptions.BancoDeDadosException;
-import com.dbc.service.PersoInfoService;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -45,8 +43,7 @@ public class PersoInfoRepository implements Actions<Integer, PersoInfo>{
             stmt.setInt(3,persoInfo.getAge());
             stmt.setString(4,persoInfo.getEmail());
 
-            int res = stmt.executeUpdate();
-            System.out.println("Adicionar user.res = " + res);
+            stmt.executeUpdate();
             return persoInfo;
 
         }catch (SQLException e) {

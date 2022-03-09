@@ -1,6 +1,6 @@
 package com.dbc.repository;
 
-import com.dbc.entities.Address;
+import com.dbc.model.Address;
 import com.dbc.exceptions.BancoDeDadosException;
 
 import java.sql.*;
@@ -43,8 +43,7 @@ public class AddressRepository implements Actions<Integer, Address>{
             stmt.setString(3,address.getCity());
             stmt.setInt(4,address.getNumber());
 
-            int res = stmt.executeUpdate();
-            System.out.println("Adicionar user.res = " + res);
+            stmt.executeUpdate();
             return address;
 
         }catch (SQLException e) {

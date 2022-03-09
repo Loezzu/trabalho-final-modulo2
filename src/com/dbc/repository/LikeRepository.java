@@ -1,7 +1,7 @@
 package com.dbc.repository;
 
-import com.dbc.entities.Like;
-import com.dbc.entities.User;
+import com.dbc.model.Like;
+import com.dbc.model.User;
 import com.dbc.exceptions.BancoDeDadosException;
 
 import java.sql.*;
@@ -99,4 +99,32 @@ public class LikeRepository {
     }
 
 
+    public boolean delete(Integer id) throws BancoDeDadosException {
+        Connection con = null;
+        try {
+            con = ConexaoBancoDeDados.getConnection();
+
+            String sql = "DELETE FROM LIKE_TINDEV_USER WHERE ID_LIKE = ?";
+
+            PreparedStatement stmt = con.prepareStatement(sql);
+
+            stmt.setInt(1, id);
+
+            // Executa-se a consulta
+            int res = stmt.executeUpdate();
+            System.out.println("removerLikePorId.res=" + res);
+
+            return res > 0;
+        } catch (SQLException e) {
+            throw new BancoDeDadosException(e.getCause());
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }
