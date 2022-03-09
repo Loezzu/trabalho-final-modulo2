@@ -5,6 +5,8 @@ import com.dbc.entities.User;
 import com.dbc.exceptions.BancoDeDadosException;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LikeRepository {
 
@@ -55,4 +57,41 @@ public class LikeRepository {
         }
     }
 
+
+    public List<Like> getLikes(User user) {
+        List<Like> likes = new ArrayList<>();
+        Connection con = null;
+        try{
+            con = ConexaoBancoDeDados.getConnection();
+            Statement stmt = con.createStatement();
+            String sql = "SELECT * FROM LIKE_TINDEV_USER";
+
+            ResultSet res = stmt.executeQuery(sql);
+
+            while(res.next()){
+                Like like = new Like();
+                User user1 = new User();
+                like.setId_like(res.getInt("ID_LIKE"));
+                user1.setUserId(res.getInt("USER_ID"));
+                user1.setUsername(res.getString("USERNAME"));
+                like.setUserId(user1.getUserId());
+                like.setUsername(user1.getUsername());
+                likes.add(like);
+            }
+
+            return likes;
+
+        }catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

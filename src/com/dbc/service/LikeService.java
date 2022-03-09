@@ -3,33 +3,52 @@ package com.dbc.service;
 import com.dbc.entities.Like;
 import com.dbc.entities.User;
 import com.dbc.repository.LikeRepository;
+import com.dbc.repository.UserRepository;
+
+import java.util.List;
+import java.util.Scanner;
 
 public class LikeService {
 
     LikeRepository likeRepository = new LikeRepository();
+    UserRepository userRepository = new UserRepository();
 
-//        public void darLike(User user1, User user2) {
-//        if (user1.equals(user2)) {
-//            System.out.println("Não é possível dar like em você.");
-//        } else {
-//            user1.getMyLikes().add(user2);
-//        }
-//        if(user2.getMyLikes().contains(user1) && user1.getMyLikes().contains(user2)) {
-//            System.out.println("Podemos ter um casal, pois "+user1.getPersoInfo().getRealName()+" e "+user2.getPersoInfo().getRealName()+" trocaram likes!" +
-//                    "\nEstamos analisando um possível match...");
-//        }
-//        try {
-//            boolean conseguiuDarLike = likeRepository.register();
-//        } catch (Exception e) {
-//            System.out.println("Não foi possível dar like.");
-//        }
-//    }
+    Scanner scan = new Scanner(System.in);
 
-    public void darLike(Like like, User user, String username) {
+
+    //imprimir likes de um usuario
+    public void printLikes(User user) {
+        try {
+            List<Like> likes = likeRepository.getLikes(user);
+            likes.forEach(System.out::println);
+        }catch (Exception e) {
+            System.out.println("Não há nenhum like registrado.");
+        }
+
+    }
+
+
+   public void listCandidates(List<User> userList, User user1) {
+        boolean itsAMatch = false;
+        for (User userChoice : userList) {
+            System.out.println("\n" + userChoice);
+            System.out.println("\n Deseja dar like? (s/n)");
+            String choice = scan.nextLine();
+            if (choice.equalsIgnoreCase("s") || choice.equalsIgnoreCase("sim")) {
+                itsAMatch = darLike(new Like(), user1, userChoice.getUsername());
+            }
+        }
+       System.out.println("\n Não há mais nenhum usuário disponível para dar like.");
+    }
+
+
+    public boolean darLike(Like like, User user, String username) {
             try {
                 Like conseguiuDarLike = likeRepository.register(like, user, username);
+                return true;
             } catch (Exception e) {
                 System.out.println("Não foi possível dar like.");
+                return false;
             }
         }
 
