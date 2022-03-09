@@ -105,6 +105,38 @@ public class UserRepository implements Actions<Integer, User> {
         }
     }
 
+//    public List<User> listarUsuariosDisponiveis(User user) throws BancoDeDadosException {
+//        List<User> users = new ArrayList<>();
+//        Connection con = null;
+//        try {
+//            con = ConexaoBancoDeDados.getConnection();
+//            Statement stmt = con.createStatement();
+//
+//            String sql = "SELECT * FROM TINDEV_USER tu LEFT OUTER JOIN  ADDRESS a ON tu.ADDRESS_ID_ADDRESS = a.ID_ADDRESS" +
+//                    " LEFT OUTER JOIN PERSOINFO pi ON tu.PERSOINFO_ID_PERSOINFO = pi.ID_PERSOINFO";
+//
+//            // Executa-se a consulta
+//            ResultSet res = stmt.executeQuery(sql);
+//
+//            while (res.next()) {
+//                User user = getUserFromResultSet(res);
+//                users.add(user);
+//            }
+//            return users;
+//
+//        } catch (SQLException e) {
+//            throw new BancoDeDadosException(e.getCause());
+//        } finally {
+//            try {
+//                if (con != null) {
+//                    con.close();
+//                }
+//            } catch (SQLException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//    }
+
     @Override
     public boolean delete(Integer id) throws BancoDeDadosException {
         Connection con = null;

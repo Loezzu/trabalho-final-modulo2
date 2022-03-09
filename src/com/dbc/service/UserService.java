@@ -7,6 +7,7 @@ import com.dbc.exceptions.BancoDeDadosException;
 import com.dbc.repository.UserRepository;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserService {
@@ -36,6 +37,35 @@ public class UserService {
             System.out.println("Conseguiu remover: " + conseguiuRemover + " | ID: " + id);
         }catch (SQLException e){
             e.printStackTrace();
+        }
+    }
+
+    public List<User> loginList() throws BancoDeDadosException {
+        return userRepository.listAll();
+    }
+
+    public List<User> listarUsuariosDisponiveis(User user){
+        try {
+            List<User> availableUsers = new ArrayList<>();
+            for (int i = 0; i < loginList().size(); i++) {
+                User currentUser = userRepository.listAll().get(i);
+
+                if (user.getPref().isCompatible(currentUser.getGender()) && currentUser.getPref().isCompatible(user.getGender())) {
+                    availableUsers.add(currentUser);
+                }
+            }
+//            List<User> list = userRepository.listarUsuariosDisponiveis(user);
+//            list.forEach(System.out::println);
+            return availableUsers;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public void showUsers(List<User> users)  {
+        for (int i=0; i<users.size(); i++) {
+            System.out.println(users.get(i));
         }
     }
 

@@ -4,6 +4,9 @@ import com.dbc.enums.Gender;
 import com.dbc.enums.Pref;
 import com.dbc.enums.ProgLangs;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class User {
 
     private Integer userId; // Id Banco de dados
@@ -16,6 +19,8 @@ public class User {
     private Gender gender;
     private Pref pref;
     private String whats;
+
+    private final List<User> myLikes = new ArrayList<>();
 
     public User(){
     }
@@ -114,7 +119,9 @@ public class User {
     }
 
 
-
+    public List<User> getMyLikes() {
+        return myLikes;
+    }
 
     @Override
     public String toString() {
