@@ -7,8 +7,6 @@ import com.dbc.enums.Gender;
 import com.dbc.enums.Pref;
 import com.dbc.enums.ProgLangs;
 import com.dbc.exceptions.BancoDeDadosException;
-import com.dbc.repository.AddressRepository;
-import com.dbc.repository.UserRepository;
 import com.dbc.service.AddressService;
 import com.dbc.service.PersoInfoService;
 import com.dbc.service.UserService;
@@ -25,10 +23,6 @@ public class Menu {
     AddressService addressService = new AddressService();
     PersoInfoService persoInfoService = new PersoInfoService();
 
-    UserRepository userRepo = new UserRepository();
-    AddressRepository addressRepo = new AddressRepository();
-    PersoInfo persoInfoRepo = new PersoInfo();
-
     User user = new User();
     Address address = new Address();
     PersoInfo persoInfo = new PersoInfo();
@@ -39,7 +33,8 @@ public class Menu {
                 Bem vindo(a) ao TinDev!
                 Digite a opção desejada:
                 1 - Login
-                2 - Cadastro""");
+                2 - Cadastro
+                3 - Encerrar Programa""");
 
         int menu = Integer.parseInt(scan.next());
 
@@ -49,6 +44,9 @@ public class Menu {
             }
             case 2 -> {
                 registerUser();
+            }
+            case 3 ->{
+                System.exit(1);
             }
             default -> {
                 System.out.println("Tente novamente.");
@@ -84,37 +82,56 @@ public class Menu {
             }
         }
 
-    private void registerUser() {
+    private void registerUser() throws BancoDeDadosException {
+        List<User> userList = userService.loginList();
+
         System.out.println("""
                 [CADASTRO]
                 Digite seu Username:""");
-        String username = scan.next().toLowerCase(Locale.ROOT);
-        scan.nextLine();
+        String usernameCheck = scan.next().toLowerCase(Locale.ROOT);
+
+        for (int i = 0; i < userList.size(); i++) {
+            while (usernameCheck.equals(userList.get(i).getUsername())) {
+                System.out.println("Username já cadastrado. Escolha outro:");
+                usernameCheck = scan.next();
+                i = 0;
+            }
+        }
+        String username = usernameCheck;
         user.setUsername(username);
         System.out.println("Digite sua senha: ");
-        String password = scan.nextLine();
+        String password = scan.next();
         user.setPassword(password);
 
         System.out.println("Digite seu nome verdadeiro: ");
-        String name = scan.nextLine();
+        String name = scan.next();
         persoInfo.setRealName(name);
         System.out.println("Digite sua idade: ");
         Integer age = Integer.valueOf(scan.next());
         persoInfo.setAge(age);
         System.out.println("Digite seu email: ");
-        String email = scan.next();
-        scan.nextLine();
+        String emailCheck = scan.next().toLowerCase(Locale.ROOT);
+        for (int i = 0; i < userList.size(); i++) {
+            while (emailCheck.equals(userList.get(i).getPersoInfo().getEmail())) {
+                System.out.println("E-mail já cadastrado. Escolha outro:");
+                emailCheck = scan.next();
+                i = 0;
+            }
+        }
+        String email = emailCheck;
         persoInfo.setEmail(email);
 
         System.out.println("Digite seu endereço: \n" +
                 "Rua: ");
-        String street = scan.nextLine();
+        String street = scan.next();
+        scan.nextLine();
         address.setStreet(street);
         System.out.println("Cidade: ");
         String city = scan.nextLine();
         address.setCity(city);
         System.out.println("Numero da casa: ");
-        Integer housenumber = Integer.valueOf(scan.next());
+        Integer housenumber = scan.nextInt();
+        scan.nextLine();
         address.setNumber(housenumber);
 
         System.out.println("""
@@ -150,6 +167,7 @@ public class Menu {
         addressService.addAddress(address);
         persoInfoService.addPersoInfo(persoInfo);
         userService.addUser(user);
+        appInit();
     }
 
     private void userMenu(User user) throws BancoDeDadosException {
@@ -167,7 +185,7 @@ public class Menu {
             case 1 -> tinDev(user);
             case 2 -> updateUser(user);
             case 3 -> printUser(user);
-            case 8 -> deleteUser(user);
+            case 4 -> deleteUser(user);
             case 9 -> appInit();
             default -> userMenu(user);
         }
@@ -176,12 +194,90 @@ public class Menu {
     private void tinDev(User user) {
     }
 
-    private void printUser(User user) {
+    private void printUser(User user) throws BancoDeDadosException {
+        userService.printMyUser(user);
+        userMenu(user);
     }
 
-    private void updateUser(User user) {
+    private void updateUser(User user) throws BancoDeDadosException {
+        System.out.println("""
+                1 - Editar Dados do Usuário
+                2 - Editar Dados Pessoais
+                3 - Editar Endereço
+                """);
+        int option = scan.nextInt();
+        switch (option){
+            case 1 -> {
+                User newUser = new User();
+                System.out.println("Digite seu novo Username: ");
+                String username = scan.next();
+                scan.nextLine();
+                newUser.setUsername(username);
+                System.out.println("Digite sua nova Senha: ");
+                String senha = scan.next();
+                scan.nextLine();
+                newUser.setPassword(senha);
+                System.out.println("""
+                Qual sua nova linguagem de programação favorita?
+                1 - JAVASCRIPT
+                2 - JAVA
+                3 - PHP
+                4 - C
+                5 - PYTHON
+                6 - TYPESCRIPT
+                7 - RUBY""");
+                ProgLangs progLangs = ProgLangs.values()[scan.nextInt() - 1];
+                newUser.setProgLangs(progLangs);
+                System.out.println("""
+                Qual sua nova preferencia?
+                1 - HOMEM
+                2 - MULHER
+                3 - AMBOS""");
+                Pref pref = Pref.values()[scan.nextInt() - 1];
+                newUser.setPref(pref);
+                userService.editarUsuario(user, newUser);
+                userMenu(user);
+            }
+            case 2 -> {
+                PersoInfo newPersoInfo = new PersoInfo();
+                System.out.println("Digite seu nome verdadeiro: ");
+                String name = scan.next();
+                scan.nextLine();
+                newPersoInfo.setRealName(name);
+                System.out.println("Digite sua nova idade: ");
+                Integer age = Integer.valueOf(scan.next());
+                newPersoInfo.setAge(age);
+                System.out.println("Digite seu novo email: ");
+                String email = scan.next();
+                scan.nextLine();
+                newPersoInfo.setEmail(email);
+                persoInfoService.editarPersoInfo(user.getPersoInfo(), newPersoInfo);
+                userMenu(user);
+            }
+            case 3 -> {
+                Address newAddress = new Address();
+                System.out.println("Digite seu novo endereço: \n" +
+                        "Rua: ");
+                String street = scan.next();
+                scan.nextLine();
+                newAddress.setStreet(street);
+                System.out.println("Cidade: ");
+                String city = scan.next();
+                scan.nextLine();
+                newAddress.setCity(city);
+                System.out.println("Numero da casa: ");
+                Integer housenumber = Integer.valueOf(scan.next());
+                newAddress.setNumber(housenumber);
+                addressService.editarEndereco(user.getAddress(), newAddress);
+                userMenu(user);
+            }
+        }
     }
 
-    private void deleteUser(User user) {
+    private void deleteUser(User user) throws BancoDeDadosException {
+        userService.removeUserById(user.getUserId());
+        addressService.removeAddressById(user.getAddress().getIdAddress());
+        persoInfoService.removePersoInfoById(user.getPersoInfo().getIdPersoInfo());
+        appInit();
     }
 }

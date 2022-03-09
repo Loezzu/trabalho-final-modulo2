@@ -37,4 +37,12 @@ public class PersoInfoService {
         }
     }
 
+    public void editarPersoInfo(PersoInfo persoInfo, PersoInfo newPersoInfo) {
+        try{
+            boolean conseguiuEditar = persoInfoRepository.edit(persoInfo, newPersoInfo);
+            System.out.println("Editou: " + conseguiuEditar);
+        } catch (BancoDeDadosException e) {
+            e.printStackTrace();
+        }
+    }
 }

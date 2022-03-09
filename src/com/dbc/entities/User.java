@@ -15,20 +15,6 @@ public class User {
     private Gender gender;
     private Pref pref;
 
-    public User(){
-    }
-
-    public User(Integer userId, String username, String password, PersoInfo persoInfo, Address address, ProgLangs progLangs, Gender gender, Pref pref) {
-        this.userId = userId;
-        this.username = username;
-        this.password = password;
-        this.persoInfo = persoInfo;
-        this.address = address;
-        this.progLangs = progLangs;
-        this.gender = gender;
-        this.pref = pref;
-    }
-
     public Integer getUserId() {
         return userId;
     }
@@ -87,15 +73,14 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
-                "idUser=" + userId +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", persoInfo=" + persoInfo +
-                ", address=" + address +
-                ", progLangs=" + progLangs +
-                ", gender=" + gender +
-                ", pref=" + pref +
-                '}';
+        return "User {"
+                + "User ID = " + userId
+                + " - Username = " + username
+                + " - Password = " + password
+                + " - PersoInfo = " + persoInfo
+                + " - Address = " + address
+                + " - ProgLangs = " + progLangs
+                + " - Gender = " + gender
+                + " - Pref = " + pref + "}";
     }
 }

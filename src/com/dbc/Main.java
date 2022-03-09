@@ -16,6 +16,7 @@ import com.dbc.service.UserService;
 import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
+import com.dbc.exceptions.BancoDeDadosException;
 
 public class Main {
 

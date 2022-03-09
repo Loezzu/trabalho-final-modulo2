@@ -37,11 +37,10 @@ public class PersoInfo {
 
     @Override
     public String toString() {
-        return "PersoInfo{" +
-                "idPersoInfo=" + idPersoInfo +
-                ", realName='" + realName + '\'' +
-                ", age=" + age +
-                ", email='" + email + '\'' +
-                '}';
+        return "PersoInfo {"
+                + "PersoInfoID = " + idPersoInfo
+                + " - RealName = " + realName
+                + " - Age = " + age
+                + " - Email = " + email + "}";
     }
 }

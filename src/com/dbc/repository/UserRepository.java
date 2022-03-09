@@ -134,8 +134,42 @@ public class UserRepository implements Actions<Integer, User> {
     }
 
     @Override
-    public boolean edit(Integer id, User user) throws BancoDeDadosException {
-        return false;
+    public boolean edit(User user, User newUser) throws BancoDeDadosException {
+        Connection con = null;
+        try {
+            con = ConexaoBancoDeDados.getConnection();
+
+            String sql = "UPDATE TINDEV_USER SET " +
+                    " USERNAME = ?," +
+                    " PASSWORD = ?," +
+                    " PROGLANGS = ?, " +
+                    " PREF = ? " +
+                    " WHERE USER_ID = ?";
+
+            PreparedStatement stmt = con.prepareStatement(sql);
+
+            stmt.setString(1, newUser.getUsername());
+            stmt.setString(2, newUser.getPassword());
+            stmt.setString(3, newUser.getProgLangs().toString());
+            stmt.setString(4, newUser.getPref().toString());
+            stmt.setInt(5, user.getUserId());
+
+            // Executa-se a consulta
+            int res = stmt.executeUpdate();
+            System.out.println("editarPessoa.res=" + res);
+
+            return res > 0;
+        } catch (SQLException e) {
+            throw new BancoDeDadosException(e.getCause());
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private User getUserFromResultSet(ResultSet res) throws SQLException {

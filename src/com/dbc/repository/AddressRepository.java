@@ -126,7 +126,39 @@ public class AddressRepository implements Actions<Integer, Address>{
     }
 
     @Override
-    public boolean edit(Integer id, Address address) throws BancoDeDadosException {
-        return false;
+    public boolean edit(Address address, Address newAddress) throws BancoDeDadosException {
+        Connection con = null;
+        try {
+            con = ConexaoBancoDeDados.getConnection();
+
+            String sql = "UPDATE ADDRESS SET " +
+                    " STREET = ?," +
+                    " HOUSE_NUMBER = ?," +
+                    " CITY = ? " +
+                    " WHERE ID_ADDRESS = ?";
+
+            PreparedStatement stmt = con.prepareStatement(sql);
+
+            stmt.setString(1, newAddress.getStreet());
+            stmt.setInt(2, newAddress.getNumber());
+            stmt.setString(3, newAddress.getCity());
+            stmt.setInt(4, address.getIdAddress());
+
+            // Executa-se a consulta
+            int res = stmt.executeUpdate();
+            System.out.println("editarPessoa.res=" + res);
+
+            return res > 0;
+        } catch (SQLException e) {
+            throw new BancoDeDadosException(e.getCause());
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

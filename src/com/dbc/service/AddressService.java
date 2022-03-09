@@ -38,4 +38,12 @@ public class AddressService {
         }
     }
 
+    public void editarEndereco(Address address, Address newAddress) {
+        try{
+            boolean conseguiuEditar = addressRepository.edit(address, newAddress);
+            System.out.println("Editou: " + conseguiuEditar);
+        } catch (BancoDeDadosException e) {
+            e.printStackTrace();
+        }
+    }
 }

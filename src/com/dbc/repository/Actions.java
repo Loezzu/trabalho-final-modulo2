@@ -12,7 +12,7 @@ public interface Actions<KEY, OBJECT> {
         Integer getProximoId(Connection connection) throws SQLException;
         OBJECT register(OBJECT object) throws BancoDeDadosException;
         List<OBJECT> list() throws BancoDeDadosException;
-        boolean edit(KEY id, OBJECT OBJECT) throws BancoDeDadosException;
+        boolean edit(OBJECT object, OBJECT object1) throws BancoDeDadosException;
         boolean delete(KEY id) throws BancoDeDadosException;
 
 }
