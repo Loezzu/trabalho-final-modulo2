@@ -1,7 +1,6 @@
 package com.dbc.service;
 
 
-import com.dbc.entities.PersoInfo;
 import com.dbc.entities.User;
 import com.dbc.exceptions.BancoDeDadosException;
 import com.dbc.repository.UserRepository;
@@ -24,7 +23,7 @@ public class UserService {
 
     public void listUsers(){
         try{
-            List<User> list = userRepository.listAll();
+            List<User> list = userRepository.list();
             list.forEach(System.out::println);
         }catch (SQLException e){
             e.printStackTrace();
@@ -41,14 +40,14 @@ public class UserService {
     }
 
     public List<User> loginList() throws BancoDeDadosException {
-        return userRepository.listAll();
+        return userRepository.list();
     }
 
     public List<User> listarUsuariosDisponiveis(User user){
         try {
             List<User> availableUsers = new ArrayList<>();
             for (int i = 0; i < loginList().size(); i++) {
-                User currentUser = userRepository.listAll().get(i);
+                User currentUser = userRepository.list().get(i);
 
                 if (user.getPref().isCompatible(currentUser.getGender()) && currentUser.getPref().isCompatible(user.getGender())) {
                     availableUsers.add(currentUser);

@@ -1,7 +1,5 @@
 package com.dbc.entities;
 
-import java.net.Inet4Address;
-
 public class PersoInfo {
 
     private Integer idPersoInfo;
@@ -9,11 +7,9 @@ public class PersoInfo {
     private Integer age;
     private String email;
 
-
     public Integer getIdPersoInfo() {
         return idPersoInfo;
     }
-
     public void setIdPersoInfo(Integer idPersoInfo) {
         this.idPersoInfo = idPersoInfo;
     }
@@ -38,8 +34,6 @@ public class PersoInfo {
     public void setEmail(String email) {
         this.email = email;
     }
-
-
 
     @Override
     public String toString() {

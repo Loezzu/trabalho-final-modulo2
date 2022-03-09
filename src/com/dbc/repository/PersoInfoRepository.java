@@ -63,7 +63,7 @@ public class PersoInfoRepository implements Actions<Integer, PersoInfo>{
     }
 
     @Override
-    public List<PersoInfo> listAll() throws BancoDeDadosException {
+    public List<PersoInfo> list() throws BancoDeDadosException {
         List<PersoInfo> persoInfos = new ArrayList<>();
         Connection con = null;
         try {

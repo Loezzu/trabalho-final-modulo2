@@ -1,11 +1,8 @@
 package com.dbc.enums;
 
-import com.dbc.enums.Gender;
-
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
 
 public enum Pref {
     MEN(Collections.singletonList(Gender.MALE)),

@@ -61,7 +61,7 @@ public class AddressRepository implements Actions<Integer, Address>{
     }
 
     @Override
-    public List<Address> listAll() throws BancoDeDadosException {
+    public List<Address> list() throws BancoDeDadosException {
         List<Address> addresses = new ArrayList<>();
         Connection con = null;
         try {

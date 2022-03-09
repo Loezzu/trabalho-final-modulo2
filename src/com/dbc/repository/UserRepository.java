@@ -39,21 +39,19 @@ public class UserRepository implements Actions<Integer, User> {
             user.setUserId(proximoId);
 
             String sql = "INSERT INTO TINDEV_USER\n"
-            + "(USER_ID, USER_TYPE, USERNAME, PASSWORD, PERSOINFO_ID_PERSOINFO, ADDRESS_ID_ADDRESS, PROGLANGS, GENDER, PREF, WHATSAPP)\n"
-            + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)\n";
+                    + "(USER_ID, USERNAME, PASSWORD, PERSOINFO_ID_PERSOINFO, ADDRESS_ID_ADDRESS, PROGLANGS, GENDER, PREF)\n"
+                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)\n";
 
             PreparedStatement stmt = con.prepareStatement(sql);
 
             stmt.setInt(1,user.getUserId());
-            stmt.setInt(2,user.getUserType());
-            stmt.setString(3,user.getUsername());
-            stmt.setString(4,user.getPassword());
-            stmt.setInt(5,user.getPersoInfo().getIdPersoInfo());
-            stmt.setInt(6,user.getAddress().getIdAddress());
-            stmt.setString(7, user.getProgLangs().toString());
-            stmt.setString(8, user.getGender().toString());
-            stmt.setString(9, user.getPref().toString());
-            stmt.setString(10, user.getWhats());
+            stmt.setString(2,user.getUsername());
+            stmt.setString(3,user.getPassword());
+            stmt.setInt(4,user.getPersoInfo().getIdPersoInfo());
+            stmt.setInt(5,user.getAddress().getIdAddress());
+            stmt.setString(6, user.getProgLangs().toString());
+            stmt.setString(7, user.getGender().toString());
+            stmt.setString(8, user.getPref().toString());
 
             int res = stmt.executeUpdate();
             System.out.println("Adicionar user.res = " + res);
@@ -73,7 +71,7 @@ public class UserRepository implements Actions<Integer, User> {
     }
 
     @Override
-    public List<User> listAll() throws BancoDeDadosException {
+    public List<User> list() throws BancoDeDadosException {
         List<User> users = new ArrayList<>();
         Connection con = null;
         try {
@@ -104,38 +102,6 @@ public class UserRepository implements Actions<Integer, User> {
             }
         }
     }
-
-//    public List<User> listarUsuariosDisponiveis(User user) throws BancoDeDadosException {
-//        List<User> users = new ArrayList<>();
-//        Connection con = null;
-//        try {
-//            con = ConexaoBancoDeDados.getConnection();
-//            Statement stmt = con.createStatement();
-//
-//            String sql = "SELECT * FROM TINDEV_USER tu LEFT OUTER JOIN  ADDRESS a ON tu.ADDRESS_ID_ADDRESS = a.ID_ADDRESS" +
-//                    " LEFT OUTER JOIN PERSOINFO pi ON tu.PERSOINFO_ID_PERSOINFO = pi.ID_PERSOINFO";
-//
-//            // Executa-se a consulta
-//            ResultSet res = stmt.executeQuery(sql);
-//
-//            while (res.next()) {
-//                User user = getUserFromResultSet(res);
-//                users.add(user);
-//            }
-//            return users;
-//
-//        } catch (SQLException e) {
-//            throw new BancoDeDadosException(e.getCause());
-//        } finally {
-//            try {
-//                if (con != null) {
-//                    con.close();
-//                }
-//            } catch (SQLException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//    }
 
     @Override
     public boolean delete(Integer id) throws BancoDeDadosException {
@@ -177,13 +143,11 @@ public class UserRepository implements Actions<Integer, User> {
         PersoInfo persoInfo = new PersoInfo();
         Address address = new Address();
         user.setUserId(res.getInt("USER_ID"));
-        user.setUserType(res.getInt("USER_TYPE"));
         user.setUsername(res.getString("USERNAME"));
         user.setPassword(res.getString("PASSWORD"));
         user.setProgLangs(ProgLangs.valueOf(res.getString("PROGLANGS")));
         user.setGender(Gender.valueOf(res.getString("GENDER")));
         user.setPref(Pref.valueOf(res.getString("PREF")));
-        user.setWhats(res.getString("WHATSAPP"));
 
         persoInfo.setIdPersoInfo(res.getInt("PERSOINFO_ID_PERSOINFO"));
         persoInfo.setRealName(res.getString("REALNAME"));

@@ -1,8 +1,6 @@
 package com.dbc.service;
 
-import com.dbc.entities.Address;
 import com.dbc.entities.PersoInfo;
-import com.dbc.entities.User;
 import com.dbc.exceptions.BancoDeDadosException;
 import com.dbc.repository.PersoInfoRepository;
 
@@ -23,7 +21,7 @@ public class PersoInfoService {
 
     public void listPersoInfos(){
         try{
-            List<PersoInfo> list = persoInfoRepository.listAll();
+            List<PersoInfo> list = persoInfoRepository.list();
             list.forEach(System.out::println);
         }catch (SQLException e){
             e.printStackTrace();

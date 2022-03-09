@@ -22,7 +22,7 @@ public class AddressService {
 
     public void listAddress(){
         try{
-            List<Address> list = addressRepository.listAll();
+            List<Address> list = addressRepository.list();
             list.forEach(System.out::println);
         }catch (SQLException e){
             e.printStackTrace();
