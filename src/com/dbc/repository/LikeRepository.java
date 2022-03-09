@@ -57,33 +57,36 @@ public class LikeRepository {
         }
     }
 
-
-    public List<Like> getLikes(User user) {
-        List<Like> likes = new ArrayList<>();
+    public List<Like> getLikes(Integer id_user) throws BancoDeDadosException {
         Connection con = null;
         try{
             con = ConexaoBancoDeDados.getConnection();
-            Statement stmt = con.createStatement();
-            String sql = "SELECT * FROM LIKE_TINDEV_USER";
 
-            ResultSet res = stmt.executeQuery(sql);
+            String sql = "SELECT * FROM LIKE_TINDEV_USER WHERE USER_ID = ?";
+
+            PreparedStatement stmt = con.prepareStatement(sql);
+
+            stmt.setInt(1, id_user);
+
+            ResultSet res = stmt.executeQuery();
+
+            List<Like> likes = new ArrayList<>();
 
             while(res.next()){
                 Like like = new Like();
-                User user1 = new User();
+                User user = new User();
                 like.setId_like(res.getInt("ID_LIKE"));
-                user1.setUserId(res.getInt("USER_ID"));
-                user1.setUsername(res.getString("USERNAME"));
-                like.setUserId(user1.getUserId());
-                like.setUsername(user1.getUsername());
+                user.setUserId(res.getInt("USER_ID"));
+                user.setUsername(res.getString("USERNAME"));
+                like.setUser_id(user.getUserId());
+                like.setUsername(user.getUsername());
                 likes.add(like);
             }
 
             return likes;
 
         }catch (SQLException e) {
-            e.printStackTrace();
-            return null;
+            throw new BancoDeDadosException(e.getCause());
         } finally {
             try {
                 if (con != null) {
@@ -94,4 +97,6 @@ public class LikeRepository {
             }
         }
     }
+
+
 }

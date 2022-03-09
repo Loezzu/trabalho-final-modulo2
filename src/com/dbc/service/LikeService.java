@@ -1,5 +1,6 @@
 package com.dbc.service;
 
+import com.dbc.Menu;
 import com.dbc.entities.Like;
 import com.dbc.entities.User;
 import com.dbc.repository.LikeRepository;
@@ -12,14 +13,14 @@ public class LikeService {
 
     LikeRepository likeRepository = new LikeRepository();
     UserRepository userRepository = new UserRepository();
-
+//    Menu menu = new Menu();
     Scanner scan = new Scanner(System.in);
 
 
     //imprimir likes de um usuario
-    public void printLikes(User user) {
+    public void printLikes(Integer id) {
         try {
-            List<Like> likes = likeRepository.getLikes(user);
+            List<Like> likes = likeRepository.getLikes(id);
             likes.forEach(System.out::println);
         }catch (Exception e) {
             System.out.println("Não há nenhum like registrado.");
@@ -29,16 +30,17 @@ public class LikeService {
 
 
    public void listCandidates(List<User> userList, User user1) {
-        boolean itsAMatch = false;
         for (User userChoice : userList) {
             System.out.println("\n" + userChoice);
             System.out.println("\n Deseja dar like? (s/n)");
             String choice = scan.nextLine();
             if (choice.equalsIgnoreCase("s") || choice.equalsIgnoreCase("sim")) {
-                itsAMatch = darLike(new Like(), user1, userChoice.getUsername());
+                darLike(new Like(), user1, userChoice.getUsername());
+                match(user1, userChoice);
             }
         }
        System.out.println("\n Não há mais nenhum usuário disponível para dar like.");
+
     }
 
 
@@ -52,5 +54,32 @@ public class LikeService {
             }
         }
 
+   public void match(User user1, User user2) {
+        try {
+            if (verificaSeJaFoiDadoLike(user1, user2) && verificaSeJaFoiDadoLike(user2, user1)) {
+                if (user1.getProgLangs().equals(user2.getProgLangs())) {
+                    System.out.println("\n" + user1 + " e " + user2 + " formaram um casal.");
+                } else {
+                    System.out.println("\n" + user1 + " e " + user2 + " não formaram um casal.");
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Não há nenhum match registrado.");
+        }
+   }
 
+
+    public boolean verificaSeJaFoiDadoLike(User user, User currentUser) {
+        try {
+            List<Like> likes = likeRepository.getLikes(user.getUserId());
+            for (Like like : likes) {
+                if (like.getUsername().equals(currentUser.getUsername())) {
+                    return true;
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Não há nenhum like registrado.");
+        }
+        return false;
+    }
 }

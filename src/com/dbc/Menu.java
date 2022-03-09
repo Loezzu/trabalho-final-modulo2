@@ -8,6 +8,7 @@ import com.dbc.enums.Pref;
 import com.dbc.enums.ProgLangs;
 import com.dbc.exceptions.BancoDeDadosException;
 import com.dbc.service.AddressService;
+import com.dbc.service.LikeService;
 import com.dbc.service.PersoInfoService;
 import com.dbc.service.UserService;
 
@@ -22,6 +23,7 @@ public class Menu {
     UserService userService = new UserService();
     AddressService addressService = new AddressService();
     PersoInfoService persoInfoService = new PersoInfoService();
+    LikeService likeService = new LikeService();
 
     User user = new User();
     Address address = new Address();
@@ -170,7 +172,7 @@ public class Menu {
         appInit();
     }
 
-    private void userMenu(User user) throws BancoDeDadosException {
+    public void userMenu(User user) throws BancoDeDadosException {
         System.out.println("""
                     \n[MENU]
                     1 - Procurar parceiros
@@ -191,7 +193,22 @@ public class Menu {
         }
     }
 
-    private void tinDev(User user) {
+    private void tinDev(User user) throws BancoDeDadosException {
+        System.out.println("""
+                    \n[TINDEV]
+                    1 - Listar candidatos
+                    9 - Ir para o menu anterior""");
+        int userMenu = scan.nextInt();
+        scan.nextLine();
+
+        switch (userMenu) {
+            case 1 -> {
+                List<User> userList = userService.listarUsuariosDisponiveis(user);
+                likeService.listCandidates(userList, user);
+                tinDev(user);
+            }
+            default -> tinDev(user);
+        }
     }
 
     private void printUser(User user) throws BancoDeDadosException {

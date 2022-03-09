@@ -69,10 +69,10 @@ public class UserService {
                 if (Objects.equals(currentUser.getUserId(), user.getUserId()) && Objects.equals(currentUser.getUserId(), user.getUserId())) {
                     continue;
                 }
-                //Verifica se o usuário já está na lista de likes do outro usuário
-//                if (!likeService.verificaLike(currentUser, user)) {
-//                    continue;
-//                }
+
+                if (likeService.verificaSeJaFoiDadoLike(user, currentUser)) {
+                    continue;
+                }
 
                 if (user.getPref().isCompatible(currentUser.getGender()) && currentUser.getPref().isCompatible(user.getGender())) {
                     availableUsers.add(currentUser);
